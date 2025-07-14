@@ -1,0 +1,3 @@
+class DarkLightTheme {
+  DarkLightTheme._();
+}

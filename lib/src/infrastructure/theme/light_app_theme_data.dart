@@ -1,0 +1,3 @@
+class LightAppThemeData {
+  LightAppThemeData._();
+}
