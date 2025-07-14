@@ -1,0 +1,17 @@
+{
+  "splash": {
+    "splash.iconLabel": "Preparing your route...",
+    "splash.loading": "Loading...",
+    "splash.checkingConnection": "Checking internet connection",
+    "splash.updateRequired": "A new version of the app is available",
+    "splash.updateNow": "Update",
+    "splash.retry": "Retry",
+    "splash.connectionError": "Internet connection error",
+    "dialog.success": "Trip successfully requested.",
+    "map.selectOrigin": "Select origin",
+    "map.selectDestination": "Select destination",
+    "map.distance": "Approximate distance:",
+    "button.requestTrip": "Request Trip",
+    "dialog.ok": "OK"
+  }
+}

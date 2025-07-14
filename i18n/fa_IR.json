@@ -1,0 +1,17 @@
+{
+  "splash": {
+    "splash.iconLabel": "در حال آماده‌سازی مسیر...",
+    "splash.loading": "در حال بارگذاری...",
+    "splash.checkingConnection": "در حال بررسی اتصال به اینترنت",
+    "splash.updateRequired": "نسخه جدید برنامه در دسترس است",
+    "splash.updateNow": "به‌روزرسانی",
+    "splash.retry": "تلاش مجدد",
+    "splash.connectionError": "خطا در اتصال به اینترنت",
+    "dialog.success": "سفر با موفقیت ثبت شد.",
+    "map.selectOrigin": "مبدا را انتخاب کنید",
+    "map.selectDestination": "مقصد را انتخاب کنید",
+    "map.distance": "فاصله تقریبی:",
+    "button.requestTrip": "درخواست سفر",
+    "dialog.ok": "باشه"
+  }
+}
