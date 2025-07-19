@@ -10,14 +10,29 @@ class MapSelectorPage extends GetView<MapSelectorController> {
   const MapSelectorPage({super.key});
 
   @override
-  Widget build(final BuildContext context) => ClipRRect(
-    borderRadius: const BorderRadius.all(Radius.circular(Utils.largeSpace)),
-    child: _map(context),
+  Widget build(final BuildContext context) => Scaffold(
+    appBar: _appBar(),
+    body: ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(Utils.largeSpace)),
+      child: Stack(
+        children: [_map(context), _topOverlayInfo(), _requestButton()],
+      ),
+    ),
+  );
+
+  PreferredSizeWidget _appBar() => AppBar(
+    title: const Text('انتخاب مبدا و مقصد'),
+    actions: [
+      IconButton(
+        icon: const Icon(Icons.refresh),
+        onPressed: () => controller.resetSelection(),
+      ),
+    ],
   );
 
   Widget _map(BuildContext context) => CustomMap(
     mapController: controller.mapController,
-    options: CustomMapOptions(),
+    options: MapOptions(onTap: controller.onMapTap),
     children: _children(context),
   );
 
@@ -39,16 +54,103 @@ class MapSelectorPage extends GetView<MapSelectorController> {
     child: const Icon(Icons.location_searching),
   );
 
-  Widget _zoomPlugin(final BuildContext context) =>
-      ZoomButton(mapController: controller.mapController);
+  Widget _zoomPlugin(final BuildContext context) => Positioned(
+    bottom: 150,
+    right: 10,
+    child: ZoomButton(mapController: controller.mapController),
+  );
 
   List<Widget> _children(BuildContext context) => [
     CustomTileLayer(
       urlTemplate: RepositoryUrls.openStreetUrl,
       subdomains: const ['a', 'b', 'c'],
     ),
+    _polyLine(),
+    _markers(),
     _markerPlugin(),
     _myLocationPlugin(),
     _zoomPlugin(context),
   ];
+
+  Widget _markers() {
+    final markers = <Marker>[];
+
+    if (controller.startPoint.value case final LatLng start) {
+      markers.add(
+        Marker(
+          width: 40,
+          height: 40,
+          point: start,
+          child: const Icon(Icons.location_on_sharp, color: Colors.limeAccent),
+        ),
+      );
+    }
+
+    if (controller.endPoint.value case final LatLng end) {
+      markers.add(
+        Marker(
+          width: 40,
+          height: 40,
+          point: end,
+          child: const Icon(Icons.location_on_sharp, color: Colors.purple),
+        ),
+      );
+    }
+
+    return MarkerLayer(markers: markers);
+  }
+
+  Widget _polyLine() {
+    if (controller.startPoint.value == null ||
+        controller.endPoint.value == null) {
+      return SizedBox.shrink();
+    }
+    return PolylineLayer(
+      polylines: [
+        Polyline(
+          points: [controller.startPoint.value!, controller.endPoint.value!],
+          strokeWidth: 8,
+          color: Colors.purpleAccent,
+        ),
+      ],
+    );
+  }
+
+  Widget _topOverlayInfo() => Positioned(
+    top: 10,
+    left: 10,
+    right: 10,
+    child: Obx(() {
+      final distance = controller.distance.value;
+      if (distance == 0) return const SizedBox.shrink();
+      return Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: Text('فاصله${distance.toStringAsFixed(5)}'),
+      );
+    }),
+  );
+
+  Widget _requestButton() => Positioned(
+    bottom: 20,
+    left: 20,
+    right: 20,
+    child: Obx(() {
+      if (controller.startPoint.value != null &&
+          controller.endPoint.value != null) {
+        return ElevatedButton(
+          onPressed:
+              () => Get.defaultDialog(
+                title: 'درخواست ثبت شد',
+                middleText: 'سفر با موفقیت ثبت شد.',
+                confirm: ElevatedButton(
+                  onPressed: () => Get.back(),
+                  child: const Text('باشه'),
+                ),
+              ),
+          child: const Text('درخواست سفر'),
+        );
+      }
+      return const SizedBox.shrink();
+    }),
+  );
 }

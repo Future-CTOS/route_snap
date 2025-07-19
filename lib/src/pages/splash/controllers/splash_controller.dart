@@ -11,14 +11,14 @@ class SplashController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _startTheApp();
+      startTheApp();
     });
   }
 
   final RxBool isLoading = false.obs;
   final RxBool hasError = false.obs;
 
-  Future<void> _startTheApp() async {
+  Future<void> startTheApp() async {
     isLoading.value = true;
 
     final bool internet = await _checkInternet();
@@ -38,8 +38,10 @@ class SplashController extends GetxController {
 
   Future<bool> _checkInternet() async {
     try {
-      final result = await InternetAddress.lookup('https://www.digikala.com');
-      return result.isNotEmpty;
+      // final result = await InternetAddress.lookup('https://www.digikala.com');
+      // return result.isNotEmpty;
+      /// mock process
+      return true;
     } catch (_) {
       return false;
     }
@@ -72,13 +74,13 @@ class SplashController extends GetxController {
 
   Future<int> _fakeCheckFromServer() async {
     await Future.delayed(1.seconds);
-    return 10;
+    return 1;
   }
 
   void _showRetryDialog(String message) => Get.defaultDialog(
     title: 'خطا',
     middleText: message,
-    confirm: ElevatedButton(onPressed: _startTheApp, child: Text('تلاش مجدد')),
+    confirm: ElevatedButton(onPressed: startTheApp, child: Text('تلاش مجدد')),
   );
 
   void _showUpdateDialog() => Get.defaultDialog(

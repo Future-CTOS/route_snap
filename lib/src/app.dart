@@ -13,7 +13,7 @@ class App extends StatelessWidget {
     title: appName,
     debugShowCheckedModeBanner: false,
     // theme: DarkLightTheme.theme,
-    initialRoute: RoutePaths.mapSelector,
+    initialRoute: RoutePaths.splash,
     getPages: AppRoutePages.routes,
   );
 }
