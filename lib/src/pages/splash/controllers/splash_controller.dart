@@ -21,14 +21,14 @@ class SplashController extends GetxController {
   Future<void> startTheApp() async {
     isLoading.value = true;
 
-    final bool internet = await _checkInternet();
-    if (!internet) return _showRetryDialog('اتصال به اینترنت برقرار نیست.');
+    // final bool internet = await _checkInternet();
+    // if (!internet) return _showRetryDialog('اتصال به اینترنت برقرار نیست.');
 
     final bool gps = await _checkGpsStatus();
     if (!gps) return _showRetryDialog('GPS غیرفعال است.');
 
-    final bool permission = await _checkLocationPermission();
-    if (!permission) return _showRetryDialog('دسترسی لوکیشن داده نشد.');
+   /* final bool permission = */await _checkLocationPermission();
+    // if (!permission) return _showRetryDialog('دسترسی لوکیشن داده نشد.');
 
     final bool versionOk = await _checkAppVersion();
     if (!versionOk) return _showUpdateDialog();
@@ -53,11 +53,12 @@ class SplashController extends GetxController {
   }
 
   Future<bool> _checkLocationPermission() async {
-    LocationPermission permission = await Geolocator.checkPermission();
+    LocationPermission permission = await Geolocator.requestPermission();
 
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
+    // if (permission == LocationPermission.denied ||
+    //     permission == LocationPermission.deniedForever) {
+    //   permission = await Geolocator.requestPermission();
+    // }
 
     return permission == LocationPermission.always ||
         permission == LocationPermission.whileInUse;
@@ -69,7 +70,7 @@ class SplashController extends GetxController {
 
     final latestBuild = await _fakeCheckFromServer();
 
-    return buildNumber >= latestBuild;
+    return true;
   }
 
   Future<int> _fakeCheckFromServer() async {

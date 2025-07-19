@@ -30,10 +30,12 @@ class MapSelectorPage extends GetView<MapSelectorController> {
     ],
   );
 
-  Widget _map(BuildContext context) => CustomMap(
-    mapController: controller.mapController,
-    options: MapOptions(onTap: controller.onMapTap),
-    children: _children(context),
+  Widget _map(BuildContext context) => Obx(
+    () => CustomMap(
+      mapController: controller.mapController,
+      options: MapOptions(onTap: controller.onMapTap),
+      children: _children(context),
+    ),
   );
 
   Widget _markerPlugin() => MarkerLayer(
@@ -65,8 +67,8 @@ class MapSelectorPage extends GetView<MapSelectorController> {
       urlTemplate: RepositoryUrls.openStreetUrl,
       subdomains: const ['a', 'b', 'c'],
     ),
-    _polyLine(),
     _markers(),
+    _polyLine(),
     _markerPlugin(),
     _myLocationPlugin(),
     _zoomPlugin(context),
@@ -75,23 +77,23 @@ class MapSelectorPage extends GetView<MapSelectorController> {
   Widget _markers() {
     final markers = <Marker>[];
 
-    if (controller.startPoint.value case final LatLng start) {
+    if (controller.startPoint.value != null) {
       markers.add(
         Marker(
           width: 40,
           height: 40,
-          point: start,
+          point: controller.startPoint.value!,
           child: const Icon(Icons.location_on_sharp, color: Colors.limeAccent),
         ),
       );
     }
 
-    if (controller.endPoint.value case final LatLng end) {
+    if (controller.endPoint.value != null) {
       markers.add(
         Marker(
           width: 40,
           height: 40,
-          point: end,
+          point: controller.endPoint.value!,
           child: const Icon(Icons.location_on_sharp, color: Colors.purple),
         ),
       );
@@ -110,7 +112,7 @@ class MapSelectorPage extends GetView<MapSelectorController> {
         Polyline(
           points: [controller.startPoint.value!, controller.endPoint.value!],
           strokeWidth: 8,
-          color: Colors.purpleAccent,
+          color: Colors.tealAccent,
         ),
       ],
     );
