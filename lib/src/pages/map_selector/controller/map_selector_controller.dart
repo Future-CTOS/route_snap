@@ -15,12 +15,12 @@ class MapSelectorController extends GetxController {
       startPoint.value = point;
     } else if (endPoint.value == null) {
       endPoint.value = point;
-      distance.value = _calculateDistance();
     } else {
       startPoint.value = point;
       endPoint.value = null;
-      distance.value = 0.0;
     }
+
+    distance.value = _calculateDistance();
   }
 
   double _calculateDistance() {
